@@ -1,5 +1,6 @@
-use std::{io, cmp::Ordering, char};
+use std::cmp::Ordering;
 use rand::Rng;
+use std::ops::Add;
 
 fn main() {
     println!("What is your name");
@@ -112,6 +113,7 @@ fn main() {
     let(v1, v2, v3) = my_tuple;
     println!("Age: {}", v2);
 
+    // Strings
     let mut st1 = String::new();
     st1.push('A');
     st1.push_str("word");
@@ -143,4 +145,113 @@ fn main() {
         println!("{}", char);
     }
 
+    // Casting
+    let int_u8: u8 = 5;
+    let unt2_u8: u8 = 4;
+    let int3_u32: u32 = (int_u8 as u32) + (unt2_u8 as u32);
+
+    //Enums
+    enum Days{
+        Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+    }
+    impl Days{
+        fn is_weekday(&self) -> bool{
+            match self {
+                Days::Saturday | Days::Sunday => true,
+                _ => false
+            }
+        }
+    }
+
+    let today:Days = Days::Friday;
+    match today {
+        Days::Monday => println!("It's Monday"),
+        Days::Tuesday => println!("It's Tuesday"),
+        Days::Wednesday => println!("It's Wednesday"),
+        Days::Thursday => println!("It's Thursday"),
+        Days::Friday => println!("It's Friday"),
+        Days::Saturday => println!("It's Saturday"),
+        Days::Sunday => println!("It's Sunday"),
+    }
+    println!("Is weekend: {}", today.is_weekday());
+
+    //Vectors, only same type
+    let vec1: Vec<i32> = Vec::new();
+    let mut vec2 = vec![1, 2, 3, 4, 5];
+    vec2.push(5);
+    println!("Vec2: {:?}", vec2[3]);
+    let second: &i32 = &vec2[1];
+    match vec2.get(1){
+        Some(second)=> println!("Second: {}", second),
+        None => println!("None"),
+    }
+    for i in &mut vec2{
+        *i *= 2;
+    }
+    for i in &vec2{
+        println!("Vec2: {}", i);
+    }
+    println!("Vec length {:?}", vec2.len());
+    println!("Pop {:?}", vec2.pop());
+
+    say_hello();
+    println!("{:?}", get_2(5));
+
+    let (val_1, val_2) = get_2(3);
+    println!("Nums: {}, {}", val_1, val_2);
+
+    let num_list = vec![1, 2, 3, 4, 5];
+    println!("Sum of list = {}", sum_list(&num_list));
+
+    //Generics
+    println!("5 + 4 = {}", get_sum_gen(5, 4));
+    println!("5.2 + 4.5 = {}", get_sum_gen(5.2, 4.5));
+
+    //Ownerships
+    // Stack: fast, last in first out, fixed size
+    // Heap: slower, dynamic size, can grow in any direction
+
+    let str1 = String::from("World");
+    //let str2 = str1;
+    let str2 = str1.clone();
+    // Not possible to do: println!("Hello{}", str1);
+    println!("Hello {}", str1);
+
+    let str1 = String::from("Hello");
+    let str2 = str1.clone();
+    let str3 = print_return_str(str1);
+    println!("{}", str3);
+}
+
+fn say_hello(){
+    println!("Hello");
+}
+
+fn get_2(x: i32) -> (i32, i32){
+    return(x+1, x+2)
+}
+
+fn sum_list(list: &[i32]) -> i32{
+    let mut sum = 0;
+    for i in list{
+        sum += i;
+    }
+    return sum;
+}
+
+fn get_sum_gen<T:Add<Output = T>>(x: T, y: T) -> T{
+    return x + y;
+}
+
+fn print_str(x: String){
+    println!("{}", x);
+}
+
+fn print_return_str(x: String) -> String{
+    return x;
+}
+
+fn change_string(name: &mut String){
+    name.push_str("is happy");
+    println!("Message: {}", name);
 }
